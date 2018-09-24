@@ -17,10 +17,6 @@ class LoadDatabase {
 
     @Bean
     CommandLineRunner initDatabase(UrlEntityRepository repository) {
-        return args -> {
-            UrlEntity testUrl = new UrlEntity("google.com", "url.me/gDuJXopKp", "127.0.0.1");
-            System.out.println("Preloading " + repository.save(testUrl));
-//            System.out.println(repository.findAll().get(0).toString());
-        };
+        return args -> {};
     }
 }

@@ -7,5 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author Nikita R-T
  */
 public interface UrlEntityRepository extends JpaRepository<UrlEntity, Long> {
-    // TODO: find by shortUrl
+
+    UrlEntity findByCode(String code);
+
 }
