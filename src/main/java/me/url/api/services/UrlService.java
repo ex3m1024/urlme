@@ -7,12 +7,8 @@ import me.url.api.repository.UrlEntityRepository;
 import org.apache.commons.validator.routines.UrlValidator;
 import org.springframework.stereotype.Service;
 
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 import java.util.zip.CRC32;
 
 /**
@@ -37,15 +33,28 @@ public class UrlService {
         return urlValidator.isValid(url.getUrl());
     }
 
+    /**
+     * Create a short URL from simpleUrl using CRC32 and base36. Save data. Save request ip for reference/statistics
+     * @param simpleUrl
+     * @param ip
+     * @return Short url (contains code and can output a complete valid short URL)
+     * @throws Exception
+     */
     public ShortUrl createShortURL(Url simpleUrl, String ip) throws Exception {
         CRC32 crc32 = new CRC32();
         crc32.update(simpleUrl.getUrl().getBytes(StandardCharsets.UTF_8));
+        // base36 for pretty URLs:
         ShortUrl shortUrl = new ShortUrl(Long.toString(crc32.getValue(), 36).toUpperCase());
-        UrlEntity entity = repository.save(new UrlEntity(simpleUrl.getUrl(), shortUrl.getCode(), ip));
+        UrlEntity entity = repository.save(new UrlEntity(shortUrl.getCode(), simpleUrl.getUrl(), ip));
         if (entity == null) throw new Exception("Unable to generate URL");
         else return shortUrl;
     }
 
+    /**
+     * Find original URL by code, if it exists in the database
+     * @param code
+     * @return
+     */
     public String shortToSimpleUrl(String code) {
         UrlEntity urlEntity = repository.findByCode(code);
         if (urlEntity != null) return urlEntity.getOriginal();

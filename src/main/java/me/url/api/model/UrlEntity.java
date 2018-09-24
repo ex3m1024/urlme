@@ -3,32 +3,25 @@ package me.url.api.model;
 //import lombok.Data;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Objects;
 
 /**
  * @author Nikita R-T
  */
-//@Data
 @Entity
 public class UrlEntity {
 
-    private @Id @GeneratedValue Long id;
+    private @Id String code;
     private String original;
-    private String code;
     private String requestIp;
 
     public UrlEntity() {}
 
-    public UrlEntity(String original, String code, String requestIp) {
-        this.original = original;
+    public UrlEntity(String code, String original, String requestIp) {
         this.code = code;
+        this.original = original;
         this.requestIp = requestIp;
-    }
-
-    public Long getId() {
-        return id;
     }
 
     public String getOriginal() {
@@ -41,10 +34,6 @@ public class UrlEntity {
 
     public String getCode() {
         return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     public String getRequestIp() {
@@ -73,9 +62,8 @@ public class UrlEntity {
     @Override
     public String toString() {
         return "UrlEntity{" +
-                "id=" + id +
+                "code='" + code + '\'' +
                 ", original='" + original + '\'' +
-                ", shortened='" + code + '\'' +
                 ", requestIp='" + requestIp + '\'' +
                 '}';
     }
