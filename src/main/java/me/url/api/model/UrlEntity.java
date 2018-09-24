@@ -16,15 +16,15 @@ public class UrlEntity {
 
     private @Id @GeneratedValue Long id;
     private String original;
-    private String shortened;
-    private String requestData;
+    private String code;
+    private String requestIp;
 
     public UrlEntity() {}
 
-    public UrlEntity(String original, String shortened, String requestData) {
+    public UrlEntity(String original, String code, String requestIp) {
         this.original = original;
-        this.shortened = shortened;
-        this.requestData = requestData;
+        this.code = code;
+        this.requestIp = requestIp;
     }
 
     public Long getId() {
@@ -39,20 +39,20 @@ public class UrlEntity {
         this.original = original;
     }
 
-    public String getShortened() {
-        return shortened;
+    public String getCode() {
+        return code;
     }
 
-    public void setShortened(String shortened) {
-        this.shortened = shortened;
+    public void setCode(String code) {
+        this.code = code;
     }
 
-    public String getRequestData() {
-        return requestData;
+    public String getRequestIp() {
+        return requestIp;
     }
 
-    public void setRequestData(String requestData) {
-        this.requestData = requestData;
+    public void setRequestIp(String requestIp) {
+        this.requestIp = requestIp;
     }
 
     @Override
@@ -61,13 +61,13 @@ public class UrlEntity {
         if (o == null || getClass() != o.getClass()) return false;
         UrlEntity entity = (UrlEntity) o;
         return Objects.equals(original, entity.original) &&
-                Objects.equals(shortened, entity.shortened) &&
-                Objects.equals(requestData, entity.requestData);
+                Objects.equals(code, entity.code) &&
+                Objects.equals(requestIp, entity.requestIp);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(original, shortened, requestData);
+        return Objects.hash(original, code, requestIp);
     }
 
     @Override
@@ -75,8 +75,8 @@ public class UrlEntity {
         return "UrlEntity{" +
                 "id=" + id +
                 ", original='" + original + '\'' +
-                ", shortened='" + shortened + '\'' +
-                ", requestData='" + requestData + '\'' +
+                ", shortened='" + code + '\'' +
+                ", requestIp='" + requestIp + '\'' +
                 '}';
     }
 }
