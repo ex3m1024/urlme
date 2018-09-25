@@ -23,6 +23,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
@@ -33,38 +34,45 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 //@SpringBootTest(webEnvironment = MOCK)
 public class ApiApplicationTests {
 
-//	@Autowired private MainController controller;
 	@Autowired private MockMvc mockMvc;
 	@MockBean private UrlService urlService;
-//	@Autowired private UrlService urlService;
 	@MockBean private UrlEntityRepository urlEntityRepository;
 	@Autowired private ObjectMapper objectMapper;
 
+	private static final String TEST_ADDRESS = "https://www.oracle.com";
+	private static final String LOCALHOST_IP = "127.0.0.1";
+	private static final Url testUrl = new Url(TEST_ADDRESS);
+	private static final ShortUrl aBcDeFg = new ShortUrl("aBcDeFg");
+
 	@Test
 	public void contextLoads() {
-//		assertThat(controller).isNotNull();
+		assertThat(urlService).isNotNull();
+		assertThat(urlEntityRepository).isNotNull();
 	}
 
 	@Test
-	public void validUrlShouldReturnShortenedurl() throws Exception {
+	public void validUrlShouldReturnShortenedUrl() throws Exception {
 		// TODO: restructure
-
-		Url testUrl = new Url("https://www.oracle.com");
 		when(urlService.isSimpleUrlValid(testUrl)).thenReturn(true);
-		ShortUrl aBcDeFg = new ShortUrl("aBcDeFg");
-		when(urlService.createShortURL(testUrl, "127.0.0.1")).thenReturn(aBcDeFg);
-		UrlEntity entity = new UrlEntity(testUrl.getUrl(), "aBcDeFg", "127.0.0.1");
+		when(urlService.createShortURL(testUrl, LOCALHOST_IP)).thenReturn(aBcDeFg);
+		UrlEntity entity = new UrlEntity("aBcDeFg", testUrl.getUrl(), LOCALHOST_IP);
 		when(urlEntityRepository.save(entity)).thenReturn(entity);
-//		when(urlEntityRepository.save())
-//		when(urlService.isSimpleUrlValid(new Url("googlecom"))).thenReturn(false);
 		this.mockMvc
 			.perform(post("/generate")
 					.contentType(MediaType.APPLICATION_JSON)
-					.content(objectMapper.writeValueAsString(new Url("https://www.oracle.com")))
+					.content(objectMapper.writeValueAsString(new Url(TEST_ADDRESS)))
 			)
 			.andDo(print())
 			.andExpect(status().isOk())
 			.andExpect(content().string(equalTo(objectMapper.writeValueAsString(aBcDeFg))));
 	}
 
+	@Test
+	public void convertedUrlShouldRedirectCorrectly() throws Exception {
+		UrlEntity entity = new UrlEntity("aBcDeFg", testUrl.getUrl(), LOCALHOST_IP);
+		when(urlService.shortToSimpleUrl(aBcDeFg.getCode())).thenReturn(entity.getOriginal());
+		this.mockMvc
+			.perform(get("/" + aBcDeFg.getCode()))
+			.andExpect(redirectedUrl(TEST_ADDRESS));
+	}
 }

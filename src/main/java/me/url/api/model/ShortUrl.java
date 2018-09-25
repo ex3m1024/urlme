@@ -7,7 +7,7 @@ import java.beans.Transient;
  */
 public class ShortUrl {
 
-    private static final String PROJECTURLPREFIX = "http://url.me/";
+    private static final String PROJECT_URL_PREFIX = "http://url.me/";
     private final String code;
 
     public ShortUrl() {
@@ -27,6 +27,6 @@ public class ShortUrl {
      */
     @Transient
     public String getFullUrl() {
-        return PROJECTURLPREFIX + code;
+        return PROJECT_URL_PREFIX + code;
     }
 }

@@ -22,11 +22,22 @@ public class MainController {
         this.service = service;
     }
 
+    /**
+     * Get all currently registered URLs (code, original, requestIp)
+     */
     @GetMapping("/list")
     List<UrlEntity> all() {
         return service.getAll();
     }
 
+    /**
+     * Shorten a URL
+     * @param url String with a valid URL
+     * @param request
+     * @return Shortened URL code, if the specified URL is valid.
+     * If the URL was converted before that, the code is still returned
+     * @throws Exception
+     */
     @PostMapping("/generate")
     ShortUrl create(@RequestBody Url url, HttpServletRequest request) throws Exception {
         if (service.isSimpleUrlValid(url)) {
@@ -36,12 +47,12 @@ public class MainController {
         }
     }
 
-//    @PostMapping("/resolve")
-//    Url resolve(@RequestParam String code) throws Exception {
-//        if (code.equals("ex")) throw new Exception("Not found in database!");
-//        return service.shortToSimpleUrl(code);
-//    }
-
+    /**
+     * Redirect the user to the original URL if a valid existing short URL is specified.
+     * If not, the user is redirected to / (homepage)
+     * @param code
+     * @return
+     */
     @GetMapping("/{shortUrlCode}")
     RedirectView resolve(@PathVariable(value="shortUrlCode") String code) {
         String originalURL = service.shortToSimpleUrl(code);
