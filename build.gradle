@@ -14,10 +14,7 @@ buildscript {
 	}
 }
 
-//plugins {
-//	id 'io.franzbecker.gradle-lombok' version '1.14'
-//	id 'java'
-//}
+group = 'me.url'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
@@ -26,20 +23,21 @@ apply plugin: 'com.palantir.docker'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
+bootJar {
+	baseName = 'api-docker'
+//	version =  '0.1.0'
+}
+
 docker {
-	dependsOn build as Task
+	dependsOn bootJar
+//	name "${project.group}/${bootJar.baseName}:${version}"
 	name "${project.group}/${bootJar.baseName}"
+//	files jar.archivePath
 	files bootJar.archivePath
 	buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
 }
 
-bootJar {
-	baseName = 'api-docker'
-	version =  '0.2.0'
-}
-
-group = 'me.url'
-version = '0.0.1-SNAPSHOT'
+//version = '0.1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
@@ -54,8 +52,3 @@ dependencies {
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-
-//lombok {
-//	version = '1.18.2'
-//	sha256 = ""
-//}
