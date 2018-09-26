@@ -34,11 +34,11 @@ public class UrlService {
     }
 
     /**
-     * Create a short URL from simpleUrl using CRC32 and base36. Save data. Save request ip for reference/statistics
+     * Create a short URL from simpleUrl using CRC32 and base36. Save data. Save request ip for reference/statistics.
+     * If an entry already exists, data is rewritten
      * @param simpleUrl
      * @param ip
      * @return Short url (contains code and can output a complete valid short URL)
-     * @throws Exception
      */
     public ShortUrl createShortURL(Url simpleUrl, String ip) throws Exception {
         CRC32 crc32 = new CRC32();
@@ -51,7 +51,7 @@ public class UrlService {
     }
 
     /**
-     * Find original URL by code, if it exists in the database
+     * Find original URL by code, return if it exists in the database
      * @param code
      * @return
      */

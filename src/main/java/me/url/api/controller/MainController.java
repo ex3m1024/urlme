@@ -49,7 +49,8 @@ public class MainController {
 
     /**
      * Redirect the user to the original URL if a valid existing short URL is specified.
-     * If not, the user is redirected to / (homepage)
+     * If not, the user is redirected to / (homepage).
+     * Example usage: url.me/17FDF2W will redirect to https://www.oracle.com
      * @param code
      * @return
      */
