@@ -22,16 +22,13 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
  * @author Nikita R-T
  */
 @RunWith(SpringRunner.class)
 @WebMvcTest(MainController.class)
-//@SpringBootTest(webEnvironment = MOCK)
 public class ApiApplicationTests {
 
 	@Autowired private MockMvc mockMvc;
@@ -52,11 +49,11 @@ public class ApiApplicationTests {
 
 	@Test
 	public void validUrlShouldReturnShortenedUrl() throws Exception {
-		// TODO: restructure
 		when(urlService.isSimpleUrlValid(testUrl)).thenReturn(true);
 		when(urlService.createShortURL(testUrl, LOCALHOST_IP)).thenReturn(aBcDeFg);
-		UrlEntity entity = new UrlEntity("aBcDeFg", testUrl.getUrl(), LOCALHOST_IP);
+		UrlEntity entity = new UrlEntity(aBcDeFg.getCode(), testUrl.getUrl(), LOCALHOST_IP);
 		when(urlEntityRepository.save(entity)).thenReturn(entity);
+
 		this.mockMvc
 			.perform(post("/generate")
 					.contentType(MediaType.APPLICATION_JSON)
@@ -69,8 +66,9 @@ public class ApiApplicationTests {
 
 	@Test
 	public void convertedUrlShouldRedirectCorrectly() throws Exception {
-		UrlEntity entity = new UrlEntity("aBcDeFg", testUrl.getUrl(), LOCALHOST_IP);
+		UrlEntity entity = new UrlEntity(aBcDeFg.getCode(), testUrl.getUrl(), LOCALHOST_IP);
 		when(urlService.shortToSimpleUrl(aBcDeFg.getCode())).thenReturn(entity.getOriginal());
+
 		this.mockMvc
 			.perform(get("/" + aBcDeFg.getCode()))
 			.andExpect(redirectedUrl(TEST_ADDRESS));

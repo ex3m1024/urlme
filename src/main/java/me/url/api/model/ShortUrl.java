@@ -3,6 +3,7 @@ package me.url.api.model;
 import java.beans.Transient;
 
 /**
+ * A wrapper for shortened URLs. Consists of the URL code, and can return the shortened URL with url.me prefix
  * @author Nikita R-T
  */
 public class ShortUrl {
