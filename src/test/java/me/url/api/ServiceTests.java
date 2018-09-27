@@ -11,11 +11,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -86,24 +84,5 @@ public class ServiceTests {
         when(urlEntityRepository.findAll()).thenReturn(list);
 
 		assertThat(urlService.getAll()).containsOnly(u1, u2);
-    }
-
-    @Test
-    public void ipStatsAreCorrect() {
-        UrlService urlService = new UrlService(urlEntityRepository);
-//        List<UrlEntity> list = new ArrayList<>();
-        List<UrlEntity> collect = IntStream
-                .range(1, 100)
-                .mapToObj(i -> new UrlEntity("code" + i,
-                        "http://example.com?arg=" + i,
-                        "10.0.2." + (i % 5)))
-                .collect(Collectors.toList());
-//        System.out.println(collect);
-        collect.forEach(e -> urlEntityRepository.save(e));
-        System.out.println(urlEntityRepository.findAll());
-//        when(urlEntityRepository.findEntityCountByIp())
-
-//    map(e -> new UrlEntity("code" + , e, ("10.0.2." + (i % 5))))
-//        Arrays.setAll(list, i -> new UrlEntity("code" + i, "", ("10.0.2." + (i % 5))));
     }
 }
