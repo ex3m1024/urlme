@@ -30,14 +30,11 @@ bootJar {
 
 docker {
 	dependsOn bootJar
-//	name "${project.group}/${bootJar.baseName}:${version}"
 	name "${project.group}/${bootJar.baseName}"
-//	files jar.archivePath
 	files bootJar.archivePath
 	buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
 }
 
-//version = '0.1.0-SNAPSHOT'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
