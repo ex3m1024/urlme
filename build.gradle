@@ -4,25 +4,39 @@ buildscript {
 	}
 	repositories {
 		mavenCentral()
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("gradle.plugin.com.palantir.gradle.docker:gradle-docker:0.20.1")
 	}
 }
 
-//plugins {
-//	id 'io.franzbecker.gradle-lombok' version '1.14'
-//	id 'java'
-//}
+group = 'me.url'
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
+apply plugin: 'com.palantir.docker'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-group = 'me.url'
-version = '0.0.1-SNAPSHOT'
+bootJar {
+	baseName = 'api-docker'
+//	version =  '0.1.0'
+}
+
+docker {
+	dependsOn bootJar
+	name "${project.group}/${bootJar.baseName}"
+	files bootJar.archivePath
+	buildArgs(['JAR_FILE': "${bootJar.archiveName}"])
+}
+
 sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
 	mavenCentral()
@@ -35,8 +49,3 @@ dependencies {
 	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-
-//lombok {
-//	version = '1.18.2'
-//	sha256 = ""
-//}
