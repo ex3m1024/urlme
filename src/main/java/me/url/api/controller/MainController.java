@@ -1,5 +1,6 @@
 package me.url.api.controller;
 
+import me.url.api.model.IpStat;
 import me.url.api.model.ShortUrl;
 import me.url.api.model.Url;
 import me.url.api.services.UrlService;
@@ -59,6 +60,16 @@ public class MainController {
         String originalURL = service.shortToSimpleUrl(code);
         if (originalURL == null) return new RedirectView("/");
         else return new RedirectView(originalURL);
+    }
+
+    /**
+     * Get a list of all unique IPs that have requested URL shortening,
+     * with count of unique URLs shortened by each IP
+     * @return
+     */
+    @GetMapping("/stats/ip")
+    List<IpStat> ipStats() {
+        return service.getIpStats();
     }
 
 }

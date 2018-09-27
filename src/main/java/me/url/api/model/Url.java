@@ -4,7 +4,6 @@ import java.util.Objects;
 
 /**
  * A simple wrapper for user-submitted URLs
- * TODO: @Embeddable?
  * @author Nikita R-T
  */
 public final class Url {

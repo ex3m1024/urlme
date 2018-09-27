@@ -1,5 +1,6 @@
 package me.url.api.services;
 
+import me.url.api.model.IpStat;
 import me.url.api.model.ShortUrl;
 import me.url.api.model.Url;
 import me.url.api.model.UrlEntity;
@@ -52,13 +53,22 @@ public class UrlService {
 
     /**
      * Find original URL by code, return if it exists in the database
-     * @param code
+     * @param code Shortened URL code (without "url.me/")
      * @return
      */
     public String shortToSimpleUrl(String code) {
         UrlEntity urlEntity = repository.findByCode(code);
         if (urlEntity != null) return urlEntity.getOriginal();
         else return null;
+    }
+
+    /**
+     * Return a list of all unique IPs that have requested URL shortening,
+     * with count of unique URLs shortened by each IP
+     * @return
+     */
+    public List<IpStat> getIpStats() {
+        return repository.findEntityCountByIp();
     }
 
 }
