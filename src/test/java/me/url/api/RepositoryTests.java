@@ -52,4 +52,12 @@ public class RepositoryTests {
         assertThat(statsList).isEmpty();
     }
 
+    @Test
+    public void findByCodeWorks() {
+        UrlEntity entity = new UrlEntity("1089ERX",
+                "https://www.oracle.com/cloud/applications.html", "127.0.0.1");
+        urlEntityRepository.save(entity);
+        assertThat(urlEntityRepository.findByCode("1089ERX")).isEqualTo(entity);
+    }
+
 }

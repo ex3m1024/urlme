@@ -37,7 +37,6 @@ public class MainController {
      * @param request
      * @return Shortened URL code, if the specified URL is valid.
      * If the URL was converted before that, the code is still returned
-     * @throws Exception
      */
     @PostMapping("/generate")
     ShortUrl create(@RequestBody Url url, HttpServletRequest request) throws Exception {
@@ -53,7 +52,7 @@ public class MainController {
      * If not, the user is redirected to / (homepage).
      * Example usage: url.me/17FDF2W will redirect to https://www.oracle.com
      * @param code
-     * @return
+     * @return RedirectView object to perform a redirect
      */
     @GetMapping("/{shortUrlCode}")
     RedirectView resolve(@PathVariable(value="shortUrlCode") String code) {
@@ -65,7 +64,7 @@ public class MainController {
     /**
      * Get a list of all unique IPs that have requested URL shortening,
      * with count of unique URLs shortened by each IP
-     * @return
+     * @return A list of IpStat objects
      */
     @GetMapping("/stats/ip")
     List<IpStat> ipStats() {
