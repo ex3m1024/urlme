@@ -4,12 +4,12 @@
 A simple URL shortener service with a working (unofficial) name of url.me. Based on Spring Boot.
 
 ## Requirements
-In order to compile and run, install JDK, Gradle and Docker.
+In order to compile and run, install JDK, Gradle and Docker.  
 The project can also be launched without Docker, compile and run ApiApplication.java.
 
 ## How to launch
 
-*If on Windows, launch gradlew.bat instead of ./gradlew*
+*If on Windows, launch gradlew.bat instead of ./gradlew*  
 *If on Linux, use sudo docker or add yourself to the docker group*
 
 1. ./gradlew build docker --info
@@ -30,13 +30,14 @@ The inmem option:
 ## How to use
 
 * GET /list Returns all shortened URLs with original URLs and request IPs
-* POST /generate Shortens the specified URL, returns "code" that can be appended to "url.me/"
+* POST /generate Shortens the specified URL, returns "code" that can be appended to "url.me/". The supplied URL must be valid and can start with http://, https:// or ftp://
     Content-Type: application/json
     Data:
         {
             "url": "https://www.oracle.com"
         }
-* GET /{code} Redirects the user to the required webpage. If the code is incorrect, the user is redirected to url.me/
+* GET /{code} Redirects the user to the required webpage. If the code is incorrect, the user is redirected to url.me/  
+*Example: url.me/17FDF2W* 
 * GET /stats/ip Returns an array of IP and count pairs. The list contains unique IPs and count of unique URLs shortened with it
 
 ## How to extend
@@ -47,5 +48,5 @@ The inmem option:
 * RepositoryTests.java works with the repository - test queries here.
 * ServiceTests.java contains business logic tests. Data is faked via mocking the repository.
 
-Execute *./gradlew test* to run tests.
+Execute *./gradlew test* to run tests.  
 Made by Nikita R-T
